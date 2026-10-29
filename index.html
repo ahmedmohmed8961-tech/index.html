@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>كورساتك - مذاكر بطعم الضحك</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #fafbfc;
+      color: #1e293b;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      background-color: #ffffff;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      padding-bottom: 40px;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #ea580c;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .brand-text h2 {
+      font-size: 16px;
+      color: #ea580c;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-nav-orange {
+      background: #ea580c;
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    /* Page Switching Logic */
+    .page {
+      display: none;
+      padding: 24px 20px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* --- صفحة تسجيل الدخول --- */
+    .badge-welcome {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff7ed;
+      color: #ea580c;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      color: #ea580c;
+    }
+
+    .hero-subtitle {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .code-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    .code-input-box {
+      width: 100%;
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 4px;
+      color: #334155;
+      outline: none;
+      background-color: #f8fafc;
+      transition: border-color 0.2s;
+    }
+
+    .code-input-box:focus {
+      border-color: #ea580c;
+      background-color: #ffffff;
+    }
+
+    .code-hint {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .btn-main-action {
+      width: 100%;
+      background: #ea580c;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+    }
+
+    .login-footer-links {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .link-orange {
+      color: #ea580c;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* --- صفحة تفاصيل الاشتراك والأدمن --- */
+    .sub-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .sub-hero h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .sub-hero h2 span {
+      color: #ea580c;
+    }
+
+    .sub-hero p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* كارت السعر */
+    .price-card {
+      background: linear-gradient(135deg, #ea580c, #f97316);
+      border-radius: 20px;
+      padding: 24px 20px;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25);
+    }
+
+    .price-card .badge {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .price-amount {
+      font-size: 44px;
+      font-weight: 900;
+      margin: 8px 0;
+    }
+
+    .price-amount span {
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    .price-old {
+      font-size: 13px;
+      opacity: 0.8;
+      text-decoration: line-through;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .feature-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .feature-item span {
+      color: #10b981;
+      font-size: 16px;
+    }
+
+    /* الخطوات */
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .step-card {
+      border: 1px solid #f1f5f9;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #ffffff;
+    }
+
+    .step-number {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ea580c;
+      opacity: 0.3;
+    }
+
+    .step-details h4 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .step-details p {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* الأدمن */
+    .admin-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .admin-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .admin-text h3 {
+      font-size: 15px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .admin-text span {
+      font-size: 12px;
+      color: #0284c7;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .btn-contact {
+      background-color: #e0f2fe;
+      color: #0284c7;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background-color 0.2s;
+    }
+
+    .btn-contact:hover {
+      background-color: #bae6fd;
+    }
+
+    .alert-box {
+      margin-top: 20px;
+      background-color: #fff1f2;
+      border: 1px solid #ffe4e6;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #e11d48;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- شريط الرأس -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-logo">C</div>
+        <div class="brand-text">
+          <h2>كورساتك</h2>
+          <span>مذاكر بطعم الضحك</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" onclick="togglePage('loginPage')">✕</button>
+        <button class="icon-btn">🌙</button>
+        <button class="btn-nav-orange" onclick="togglePage('subscriptionPage')">اشترك</button>
+      </div>
+    </header>
+
+    <!-- الصفحة الأولى: تسجيل الدخول -->
+    <main id="loginPage" class="page active">
+      <div class="badge-welcome">
+        <span>★</span> أهلاً بيك في كورساتك
+      </div>
+
+      <h1 class="hero-title">
+        سجل دخولك وكمل<br>
+        المنهج <span>بطعم الضحك</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        محتاج بس كود الطالب والجهاز اللي هتذاكر منه. لو غيرت موبايل أو واجهت مشكلة كلم الأدمن وهيساعدك فوراً.
+      </p>
+
+      <div class="code-label">
+        <span>كود الطالب</span>
+        <span>0/9</span>
+      </div>
+
+      <input type="text" maxlength="9" placeholder="1 2 3 4 5 6 7 8 9" class="code-input-box">
+
+      <p class="code-hint">هتلاقي الكود في رسالة الاشتراك أو من الأدمن مباشرة.</p>
+
+      <button class="btn-main-action" onclick="alert('من فضلك اشترك أولاً للتفعيل!')">
+        سجل دخول ➔
+      </button>
+
+      <div class="login-footer-links">
+        <p>لسه ما اشتركتش؟ <span class="link-orange" onclick="togglePage('subscriptionPage')">اشترك دلوقتي</span></p>
+        <p style="margin-top: 8px;">نسيت الكود أو عندك مشكلة؟ <span class="link-orange" onclick="togglePage('subscriptionPage')">كلم الأدمن</span></p>
+      </div>
+    </main>
+
+    <!-- الصفحة الثانية: تفاصيل الاشتراك والأدمن المسؤولين -->
+    <main id="subscriptionPage" class="page">
+      <div class="sub-hero">
+        <h2>كل تفاصيل <span>الاشتراك</span> والتواصل مع الأدمن</h2>
+        <p>تقدر تبدأ بتجربة مجانية وبعدين تختار الخطة اللي تناسبك، والأدمن الرسميين تحت هيساعدوك خطوة بخطوة.</p>
+      </div>
+
+      <!-- كارت الاشتراك الشهري -->
+      <div class="price-card">
+        <div class="badge">الاشتراك الشهري</div>
+        <div class="price-amount">200 <span>ج.م</span></div>
+        <div class="price-old">بدلاً من 300 ج.م</div>
+        <div style="margin-top: 8px; font-weight: bold; font-size: 13px;">شامل كل المواد</div>
+      </div>
+
+      <!-- المزايا -->
+      <div class="features-list">
+        <div class="feature-item"><span>✔</span> كل المواد لكل الشعب</div>
+        <div class="feature-item"><span>✔</span> فيديوهات الشرح كاملة</div>
+        <div class="feature-item"><span>✔</span> ملازم PDF جاهزة</div>
+        <div class="feature-item"><span>✔</span> اختبارات وتصحيح فوري</div>
+      </div>
+
+      <!-- خطوات الاشتراك -->
+      <h3 class="section-title">خطوات الاشتراك</h3>
+      <div class="steps-list">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-details">
+            <h4>اختار خطتك</h4>
+            <p>راجع باقات الاشتراك وحدد الخطة اللي تناسبك.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-details">
+            <h4>كلم الأدمن</h4>
+            <p>تواصل مع أحد الأدمن الرسميين على تيليجرام.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-details">
+            <h4>ابعت بياناتك</h4>
+            <p>الاسم، الصف، وطريقة الدفع اللي تناسبك.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <div class="step-details">
+            <h4>استلم كودك</h4>
+            <p>بعد الدفع هيوصلك كود الطالب وتعليمات تسجيل الدخول.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- قسم الأدمن المسؤولين -->
+      <div style="text-align: center; margin-bottom: 18px;">
+        <h3 style="font-size: 20px; font-weight: 800;">الأدمن المسؤولين</h3>
+        <p style="font-size: 13px; color: #64748b; margin-top: 4px;">دول الأدمن الرسميين بس — تواصل مع واحد منهم</p>
+      </div>
+
+      <!-- الأدمن الأول -->
+      <div class="admin-card">
+        <div class="admin-meta">
+          <div class="avatar-icon">?</div>
+          <div class="admin-text">
+            <h3>DR.MERO</h3>
+            <span>أدمن رسمي — بيرد بسرعة</span>
+          </div>
+        </div>
+        <a href="https://t.me/yanrj_12222" target="_blank" class="btn-contact">تواصل ↗</a>
+      </div>
+
+      <!-- الأدمن الثاني -->
+      <div class="admin-card">
+        <div class="admin-meta">
+          <div class="avatar-icon">?</div>
+          <div class="admin-text">
+            <h3>DR. YOUSEF</h3>
+            <span>أدمن رسمي — بيرد بسرعة</span>
+          </div>
+        </div>
+        <a href="https://t.me/yanrj_12222" target="_blank" class="btn-contact">تواصل ↗</a>
+      </div>
+
+      <!-- الأدمن الثالث -->
+      <div class="admin-card">
+        <div class="admin-meta">
+          <div class="avatar-icon">K</div>
+          <div class="admin-text">
+            <h3>KAREEM</h3>
+            <span>أدمن رسمي — بيرد بسرعة</span>
+          </div>
+        </div>
+        <a href="https://t.me/yanrj_12222" target="_blank" class="btn-contact">تواصل ↗</a>
+      </div>
+
+      <div class="alert-box">
+        <span>⚠️</span>
+        <span>اللي هيبعت لأكثر من أدمن في نفس الوقت بياخد حظر يا شباب!</span>
+      </div>
+
+      <button class="btn-main-action" style="margin-top: 24px;" onclick="togglePage('loginPage')">
+        الرجوع لتسجيل الدخول ➔
+      </button>
+    </main>
+
+  </div>
+
+  <script>
+    function togglePage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
